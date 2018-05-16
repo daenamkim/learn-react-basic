@@ -207,6 +207,7 @@
   top: 11px;
 }
 .notificationsFrame .content .item .commentCount:after {
+  /* FIXME: content: "\f075"; doesn't work. */
   content: "\f075";
   font-family: FontAwesome;
   position: absolute;
