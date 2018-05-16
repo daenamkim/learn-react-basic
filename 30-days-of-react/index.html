@@ -69,6 +69,27 @@
       }
     }
 
+    class ActivityItem extends React.Component {
+      render() {
+        const {activity} = this.props;
+
+        return (
+          <div className="item" key={activity.user.id}>
+            <div className="avatar">
+              <img alt={activity.text} src={activity.user.avatar} />
+            </div>
+            <span className="time">
+              {activity.timestamp}
+            </span>
+            <p>{activity.text}</p>
+            <div className="commentCount">
+              {activity.comments.length}
+            </div>
+          </div>
+        )
+      }
+    }
+
     class Content extends React.Component {
       render() {
         const {activity} = this.props;
@@ -77,18 +98,7 @@
           <div className="content">
             <div className="line"></div>
             {activities.map(activity =>
-              <div className="item" key={activity.user.id}>
-                <div className="avatar">
-                  <img alt={activity.text} src={activity.user.avatar} />
-                </div>
-                <span className="time">
-                  {activity.timestamp}
-                </span>
-                <p>{activity.text}</p>
-                <div className="commentCount">
-                  {activity.comments.length}
-                </div>
-              </div>
+              <ActivityItem activity={activity} />
             )}
           </div>
         );
