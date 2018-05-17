@@ -18,7 +18,16 @@
       constructor(props) {
         super(props);
         this.state = this.getTime();
+      }
+
+      componentDidMount() {
         this.setTimer();
+      }
+
+      componentWillUnmount() {
+        if (this.timeout) {
+          clearTimeout(this.timout);
+        }
       }
 
       getTime() {
@@ -37,7 +46,6 @@
       }
 
       setTimer() {
-        clearTimeout(this.timout);
         this.timeout = setTimeout(this.updateClock.bind(this), 1000);
       }
 
@@ -51,7 +59,7 @@
 
         return(
           <div className="clock">
-            {hours === 0 ? 12 : (hours > 12) ? hours - 12 : housrs}
+            {hours === 0 ? 12 : (hours > 12) ? hours - 12 : hours}
             :
             {minutes > 9 ? minutes : `0${minutes}`}
             :
