@@ -91,6 +91,22 @@
     }
 
     class Content extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {loading: false};
+      }
+
+      componentWillReceiveProps(nextProps) {
+        if (nextProps.requestRefresh !== this.props.requestRefresh && nextProps.requestRefresh) {
+          this.setState({loading: true}, this.updateData);
+        }
+      }
+
+      updateData() {
+        console.log("updateData()");
+        this.props.onComponentRefresh();
+      }
+
       render() {
         const {activity} = this.props;
 
@@ -105,15 +121,58 @@
       }
     }
 
-    class App extends React.Component {
+    class Footer extends React.Component {
       render() {
+        return (
+          <div className="footer">
+            {this.props.children}
+          </div>
+        );
+      }
+    }
+
+    class Container extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {refreshing: false};
+      }
+
+      refresh() {
+        console.log("refresh()");
+        this.setState({refreshing: true});
+      }
+
+      onComponentRefresh() {
+        console.log("onComponentRefresh()");
+        this.setState({refreshing: false});
+      }
+
+      render() {
+        const {refreshing} = this.state;
         return (
           <div className="notificationsFrame">
             <div className="panel">
-              <Header title="Timeline" />
-              <Content activity={activities} />
+              <Header title="GitHub Activity" />
+              <Content
+                onComponentRefresh={this.onComponentRefresh.bind(this)}
+                requestRefresh={refreshing}
+              />
+              <Footer>
+                <button onClick={this.refresh.bind(this)}>
+                  <i className="fa fa-search" />
+                  Refresh
+                </button>
+              </Footer>
             </div>
           </div>
+        );
+      }
+    }
+
+    class App extends React.Component {
+      render() {
+        return (
+          <Container />
         );
       }
     }
